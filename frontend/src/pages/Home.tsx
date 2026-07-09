@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 const Home = () => {
   const features = [
@@ -17,92 +17,148 @@ const Home = () => {
     { name: 'Guji Natural', region: 'Guji', flavor: 'Berry, Wine, Chocolate', image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=natural%20processed%20ethiopian%20guji%20coffee%20beans%20with%20berries&image_size=square' },
   ]
 
-  // Multiple image options for hero (no people)
-  const heroImageOptions1 = [
-    'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=close%20up%20of%20ethiopian%20coffee%20cherries%20drying%20on%20raised%20beds%20sunlight%20no%20people&image_size=square',
-    'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=roasted%20ethiopian%20coffee%20beans%20spilling%20from%20burlap%20sack%20no%20people&image_size=square',
-    'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=coffee%20beans%20roasting%20in%20drum%20roaster%20warm%20tones%20no%20people&image_size=square',
-  ]
-  const heroImageOptions2 = [
-    'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=specialty%20coffee%20cups%20with%20flavor%20wheels%20and%20coffee%20grounds%20no%20people&image_size=square',
-    'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=v60%20pour%20over%20coffee%20brewing%20clear%20glass%20carafe%20no%20people&image_size=square',
-    'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=coffee%20plant%20leaves%20and%20ripe%20red%20cherries%20on%20branch%20no%20people&image_size=square',
+  // Hero Slides Data
+  const heroSlides = [
+    { 
+      title: 'Premium Ethiopian Coffee', 
+      subtitle: 'Exporting exceptional coffee beans from Ethiopia to customers worldwide.',
+      image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=ethiopian%20coffee%20plantation%20lush%20green%20farm%20landscape%20no%20people&image_size=landscape_16_9'
+    },
+    { 
+      title: 'Quality From Farm to Cup', 
+      subtitle: 'Every bean is carefully selected, processed, and packaged for international standards.',
+      image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=coffee%20roasting%20facility%20roasted%20beans%20no%20people&image_size=landscape_16_9'
+    },
+    { 
+      title: 'Reliable Global Coffee Export', 
+      subtitle: 'Fast logistics, trusted partnerships, and sustainable coffee sourcing.',
+      image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=coffee%20export%20warehouse%20containers%20no%20people&image_size=landscape_16_9'
+    },
+    { 
+      title: 'Experience Authentic Ethiopian Coffee', 
+      subtitle: 'Taste the rich aroma and heritage of one of the world\'s finest coffee origins.',
+      image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=freshly%20brewed%20ethiopian%20coffee%20cup%20no%20people&image_size=landscape_16_9'
+    }
   ]
 
-  const [heroImage1Index, setHeroImage1Index] = useState(0)
-  const [heroImage2Index, setHeroImage2Index] = useState(0)
-  const [zoom1, setZoom1] = useState(false)
-  const [zoom2, setZoom2] = useState(false)
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
+  const sliderRef = useRef<HTMLDivElement>(null)
 
-  const changeImage1 = () => {
-    setHeroImage1Index((prev) => (prev + 1) % heroImageOptions1.length)
+  // Auto-play
+  useEffect(() => {
+    if (isPaused) return
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
+    }, 5000)
+    return () => clearInterval(timer)
+  }, [isPaused])
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length)
+      } else if (e.key === 'ArrowRight') {
+        setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
   }
-  const changeImage2 = () => {
-    setHeroImage2Index((prev) => (prev + 1) % heroImageOptions2.length)
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length)
   }
 
   return (
     <div>
-      {/* Hero Section - Ethiopian Coffee Harvest Background */}
-      <section className="relative h-screen min-h-[600px] flex items-center text-white">
-        <div className="absolute inset-0">
-          <img 
-            src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=lush%20ethiopian%20coffee%20farm%20landscape%20with%20mountains%20coffee%20plants%20no%20people&image_size=landscape_16_9" 
-            alt="Ethiopian Coffee Harvest" 
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-primary-900/70"></div>
-        </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <p className="text-primary-200 text-lg mb-4 tracking-wider uppercase">The Birthplace of Coffee</p>
-              <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-                Authentic Ethiopian Coffee Flavors
-              </h1>
-              <p className="text-xl mb-8 text-gray-200 max-w-lg">
-                Experience the unique, exotic flavors of Ethiopian coffee, direct from sustainable farms to your cup
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <Link 
-                  to="/products" 
-                  className="bg-primary-600 hover:bg-primary-700 text-white px-8 py-3 rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl"
-                >
-                  Explore Our Coffee
-                </Link>
-                <Link 
-                  to="/contact" 
-                  className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-primary-900 transition-all"
-                >
-                  Contact Us
-                </Link>
-              </div>
-            </div>
-            <div className="relative hidden lg:block">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="relative">
-                  <img 
-                    src={heroImageOptions1[heroImage1Index]} 
-                    alt="Sun Drying Coffee" 
-                    className={`rounded-2xl shadow-2xl transform -rotate-3 transition-transform duration-500 cursor-pointer ${zoom1 ? 'scale-125 z-10' : ''}`}
-                    onMouseEnter={() => setZoom1(true)}
-                    onMouseLeave={() => setZoom1(false)}
-                    onClick={changeImage1}
-                  />
-                </div>
-                <div className="relative">
-                  <img 
-                    src={heroImageOptions2[heroImage2Index]} 
-                    alt="Coffee Cupping" 
-                    className={`rounded-2xl shadow-2xl transform rotate-3 mt-8 transition-transform duration-500 cursor-pointer ${zoom2 ? 'scale-125 z-10' : ''}`}
-                    onMouseEnter={() => setZoom2(true)}
-                    onMouseLeave={() => setZoom2(false)}
-                    onClick={changeImage2}
-                  />
+      {/* Hero Slider Section */}
+      <section 
+        ref={sliderRef}
+        className="relative h-screen min-h-[600px] overflow-hidden"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        {heroSlides.map((slide, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 transition-opacity duration-1000 ${index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+          >
+            <img 
+              src={slide.image} 
+              alt={slide.title} 
+              className={`w-full h-full object-cover transition-transform duration-10000 ease-out ${index === currentSlide ? 'scale-110' : 'scale-100'}`}
+            />
+            <div className="absolute inset-0 bg-gray-900/45"></div>
+          </div>
+        ))}
+
+        {/* Hero Content */}
+        <div className="relative z-20 h-full flex items-center">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 w-full">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div className="text-white">
+                <p className="text-primary-400 text-lg mb-4 tracking-wider uppercase font-medium">Waka Coffee Export & Import</p>
+                <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                  {heroSlides[currentSlide].title}
+                </h1>
+                <p className="text-xl mb-8 text-gray-200 max-w-lg">
+                  {heroSlides[currentSlide].subtitle}
+                </p>
+                <div className="flex flex-wrap gap-4">
+                  <Link 
+                    to="/products" 
+                    className="bg-primary-700 hover:bg-primary-600 text-white px-8 py-4 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                  >
+                    ☕ Explore Our Coffee
+                  </Link>
+                  <Link 
+                    to="/contact" 
+                    className="border-2 border-white text-white px-8 py-4 rounded-xl font-semibold hover:bg-white hover:text-gray-900 transition-all transform hover:-translate-y-1"
+                  >
+                    📦 Request a Quote
+                  </Link>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Navigation Arrows */}
+        <button
+          onClick={prevSlide}
+          className="absolute left-4 md:left-8 top-1/2 transform -translate-y-1/2 z-30 w-14 h-14 rounded-full bg-gray-900/60 hover:bg-gray-800/80 text-white flex items-center justify-center transition-all hover:scale-110 hover:shadow-2xl"
+          aria-label="Previous slide"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <button
+          onClick={nextSlide}
+          className="absolute right-4 md:right-8 top-1/2 transform -translate-y-1/2 z-30 w-14 h-14 rounded-full bg-gray-900/60 hover:bg-gray-800/80 text-white flex items-center justify-center transition-all hover:scale-110 hover:shadow-2xl"
+          aria-label="Next slide"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+
+        {/* Slider Indicators */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex gap-3">
+          {heroSlides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentSlide(index)}
+              className={`h-3 rounded-full transition-all duration-300 ${index === currentSlide ? 'w-10 bg-primary-600' : 'w-3 bg-gray-400 hover:bg-gray-300'}`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
         </div>
       </section>
 
@@ -161,7 +217,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Featured Products with Ethiopian Flavor Images */}
+      {/* Featured Products */}
       <section className="py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -236,7 +292,7 @@ const Home = () => {
             </div>
             <div className="order-1 lg:order-2">
               <img 
-                src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=ethiopian%20coffee%20regions%20map%20with%20coffee%20cherries%20and%20beans&image_size=square_hd" 
+                src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=high%20quality%20ethiopia%20country%20map%20filled%20with%20ethiopian%20flag%20colors%20green%20yellow%20red%20with%20blue%20circle%20and%20yellow%20star%2C%20no%20people%2C%20white%20background&image_size=square_hd" 
                 alt="Ethiopian Coffee Regions" 
                 className="rounded-3xl shadow-2xl"
               />
