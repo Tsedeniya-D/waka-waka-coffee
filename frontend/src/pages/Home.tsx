@@ -2,14 +2,7 @@ import { Link } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
 
 const Home = () => {
-  const features = [
-    { title: 'Premium Quality', description: 'Sourced from the finest Ethiopian coffee farms' },
-    { title: 'Direct Farmers', description: 'Working directly with local farmers for fair trade' },
-    { title: 'International Standards', description: 'Certified and meeting global quality standards' },
-    { title: 'Fast Export', description: 'Efficient logistics for timely delivery worldwide' },
-    { title: 'Sustainable Farming', description: 'Eco-friendly and sustainable agricultural practices' },
-    { title: 'Experienced Team', description: 'Professional team with years of coffee export expertise' },
-  ]
+
 
   const products = [
     { name: 'Sidama Grade 1', region: 'Sidama', flavor: 'Floral, Citrus, Chocolate', image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=premium%20ethiopian%20sidama%20coffee%20beans%20in%20jute%20bag%20with%20floral%20notes&image_size=square' },
