@@ -1,0 +1,4 @@
+.env
+node_modules/
+# Live schema dump: structure only, but keep it local
+schema-snapshot.json

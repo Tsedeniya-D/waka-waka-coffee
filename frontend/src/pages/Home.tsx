@@ -1,13 +1,38 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
+import Hero2Img from '../../images/hero/hero2.png'
+import EthiopiaMapImg from '../../images/ethiopiaMap.jpg'
+import YirgacheffeImg from '../../images/products/yirgacheffe.png'
+import SidamoImg from '../../images/products/sidamo.png'
+import GujiImg from '../../images/products/guji.png'
 
 const Home = () => {
 
-
   const products = [
-    { name: 'Sidama Grade 1', region: 'Sidama', flavor: 'Floral, Citrus, Chocolate', image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=premium%20ethiopian%20sidama%20coffee%20beans%20in%20jute%20bag%20with%20floral%20notes&image_size=square' },
-    { name: 'Yirgacheffe Heirloom', region: 'Yirgacheffe', flavor: 'Jasmine, Bergamot, Black Tea', image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=ethiopian%20yirgacheffe%20coffee%20beans%20close%20up%20with%20jasmine%20flowers&image_size=square' },
-    { name: 'Guji Natural', region: 'Guji', flavor: 'Berry, Wine, Chocolate', image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=natural%20processed%20ethiopian%20guji%20coffee%20beans%20with%20berries&image_size=square' },
+    {
+      name: 'Yirgacheffe Coffee',
+      region: 'Yirgacheffe',
+      packageSizes: '50kg, 60kg & 1Ton',
+      originType: 'Single Origin',
+      flavor: 'Floral, Jasmine & Bergamot',
+      image: YirgacheffeImg,
+    },
+    {
+      name: 'Sidamo Coffee',
+      region: 'Sidamo',
+      packageSizes: '50kg, 60kg & 1Ton',
+      originType: 'Single Origin',
+      flavor: 'Citrus, Berry & Milk Chocolate',
+      image: SidamoImg,
+    },
+    {
+      name: 'Guji Coffee',
+      region: 'Guji',
+      packageSizes: '50kg, 60kg & 1Ton',
+      originType: 'Single Origin',
+      flavor: 'Wild Berry, Winey & Dark Chocolate',
+      image: GujiImg,
+    },
   ]
 
   // Hero Slides Data
@@ -32,6 +57,12 @@ const Home = () => {
       subtitle: 'Taste the rich aroma and heritage of one of the world\'s finest coffee origins.',
       image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=freshly%20brewed%20ethiopian%20coffee%20cup%20no%20people&image_size=landscape_16_9'
     }
+    ,
+    {
+      title: 'Our Latest Harvest',
+      subtitle: 'Freshly harvested, traceable lots ready for export.',
+      image: Hero2Img,
+    }
   ]
 
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -43,7 +74,7 @@ const Home = () => {
     if (isPaused) return
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
-    }, 5000)
+    }, 4000)
     return () => clearInterval(timer)
   }, [isPaused])
 
@@ -73,7 +104,7 @@ const Home = () => {
       {/* Hero Slider Section */}
       <section 
         ref={sliderRef}
-        className="relative h-screen min-h-[600px] overflow-hidden"
+        className="relative min-h-screen overflow-hidden"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
@@ -93,10 +124,10 @@ const Home = () => {
 
         {/* Hero Content */}
         <div className="relative z-20 h-full flex items-center">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 w-full">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 w-full">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="text-white">
-                <p className="text-primary-400 text-lg mb-4 tracking-wider uppercase font-medium">Waka Coffee Export & Import</p>
+                <p className="text-primary-400 text-lg mb-4 tracking-wider uppercase font-medium">Waka Coffee Export</p>
                 <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
                   {heroSlides[currentSlide].title}
                 </h1>
@@ -104,14 +135,14 @@ const Home = () => {
                   {heroSlides[currentSlide].subtitle}
                 </p>
                 <div className="flex flex-wrap gap-4">
-                  <Link 
-                    to="/products" 
+                  <Link
+                    to="/contact#contact-form"
                     className="bg-primary-700 hover:bg-primary-600 text-white px-8 py-4 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1"
                   >
-                    ☕ Explore Our Coffee
+                    ✉️ Contact Us
                   </Link>
-                  <Link 
-                    to="/contact" 
+                  <Link
+                    to="/request-quote"
                     className="border-2 border-white text-white px-8 py-4 rounded-xl font-semibold hover:bg-white hover:text-gray-900 transition-all transform hover:-translate-y-1"
                   >
                     📦 Request a Quote
@@ -153,6 +184,7 @@ const Home = () => {
             />
           ))}
         </div>
+        {/* Bottom caption overlay removed as requested */}
       </section>
 
       {/* Ethiopian Flavor Journey */}
@@ -237,9 +269,12 @@ const Home = () => {
                     <span className="text-primary-600">🍃</span>
                     <p className="text-gray-600 font-medium">{product.flavor}</p>
                   </div>
-                  <button className="w-full bg-primary-600 text-white py-3 rounded-xl font-semibold hover:bg-primary-700 transition-colors">
+                  <Link
+                    to={`/request-quote?product=${encodeURIComponent(product.name)}`}
+                    className="block text-center w-full bg-primary-600 text-white py-3 rounded-xl font-semibold hover:bg-primary-700 transition-colors"
+                  >
                     Request Quote
-                  </button>
+                  </Link>
                 </div>
               </div>
             ))}
@@ -284,9 +319,9 @@ const Home = () => {
               </div>
             </div>
             <div className="order-1 lg:order-2">
-              <img 
-                src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=high%20quality%20ethiopia%20country%20map%20filled%20with%20ethiopian%20flag%20colors%20green%20yellow%20red%20with%20blue%20circle%20and%20yellow%20star%2C%20no%20people%2C%20white%20background&image_size=square_hd" 
-                alt="Ethiopian Coffee Regions" 
+              <img
+                src={EthiopiaMapImg}
+                alt="Ethiopian Coffee Regions"
                 className="rounded-3xl shadow-2xl"
               />
             </div>
@@ -352,8 +387,8 @@ const Home = () => {
           <p className="text-xl text-gray-600 mb-10">
             Contact us today for a custom quotation and start your journey with Waka Coffee
           </p>
-          <Link 
-            to="/contact" 
+          <Link
+            to="/request-quote"
             className="inline-flex items-center gap-2 bg-primary-600 text-white px-12 py-4 rounded-xl font-semibold text-lg hover:bg-primary-700 transition-all shadow-xl hover:shadow-2xl"
           >
             Get a Quote Now

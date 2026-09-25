@@ -1,0 +1,34 @@
+{
+  "name": "waka-coffee-backend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "REST API for the Waka Coffee Export Management System (Express + Supabase)",
+  "type": "module",
+  "main": "src/server.js",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --import ./tests/setup.js --test --test-concurrency=1 \"tests/unit/**/*.test.js\" \"tests/integration/**/*.test.js\" \"tests/e2e/**/*.test.js\"",
+    "test:unit": "node --import ./tests/setup.js --test \"tests/unit/**/*.test.js\"",
+    "test:e2e": "node --import ./tests/setup.js --test --test-concurrency=1 \"tests/e2e/**/*.test.js\""
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.109.0",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.3",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.7.0",
+    "helmet": "^8.3.0",
+    "jose": "^6.2.12",
+    "morgan": "^1.12.1",
+    "multer": "^2.4.0",
+    "ws": "^8.21.3",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "supertest": "^7.3.0"
+  }
+}

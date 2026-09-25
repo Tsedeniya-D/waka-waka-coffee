@@ -7,7 +7,7 @@ const About = () => {
           <img 
             src="https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=ethiopian%20coffee%20farmers%20harvesting%20coffee%20cherries%20in%20beautiful%20green%20plantation&image_size=landscape_16_9" 
             alt="Ethiopian Coffee Harvest" 
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover animate-slow-zoom"
           />
           <div className="absolute inset-0 bg-primary-900/75"></div>
         </div>
@@ -27,13 +27,13 @@ const About = () => {
               <h2 className="text-4xl font-bold text-gray-900 mb-8">From Ethiopian Highlands to the World</h2>
               <div className="space-y-6 text-gray-600 text-lg leading-relaxed">
                 <p>
-                  Founded in 2010, Waka Coffee began with a simple mission: to bring the finest Ethiopian coffee directly from farmers to coffee lovers worldwide.
+                  Founded in 2014, Waka Coffee began with a simple mission: to bring the finest Ethiopian coffee directly from farmers to coffee lovers worldwide.
                 </p>
                 <p>
                   Our journey started in the heart of Sidama, where we worked closely with local farmers to improve quality and establish fair trade practices.
                 </p>
                 <p>
-                  Today, we partner with over 500 farmers across 6 major coffee-growing regions of Ethiopia, exporting premium coffee to more than 30 countries.
+                  Today, we partner with over 350 farmers across 10+ major coffee-growing regions of Ethiopia, exporting premium coffee to more than 30 countries.
                 </p>
               </div>
             </div>
